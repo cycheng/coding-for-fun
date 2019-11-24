@@ -9,6 +9,8 @@
 int largestRectangleArea_12ms(vector<int> &heights) {
   const int n = heights.size();
 
+  // [key] indexes stack: contains increased height, i.e.
+  //     heights[indexes[i]] <  heights[indexes[j]], for all j > i.
   stack<int> indexes;
   int maxArea = 0;
   for (int i = 0; i <= n; ++i) {
@@ -17,6 +19,7 @@ int largestRectangleArea_12ms(vector<int> &heights) {
       int h = heights[indexes.top()];
       indexes.pop();
       int l = indexes.empty() ? -1 : indexes.top();
+      // [key] start from *i*, so width = i - l - 1
       maxArea = max(maxArea, h * (i - l - 1));
     }
     indexes.push(i);
@@ -45,6 +48,9 @@ int largestRectangleArea_16ms(vector<int> &heights) {
   return maxArea;
 }
 
+// https://leetcode.com/problems/largest-rectangle-in-histogram/discuss/28902/5ms-O(n)-Java-solution-explained-(beats-96)
+// by anton4
+//
 // Array based, O(n)
 int largestRectangleArea_8ms(vector<int> &heights) {
   const int n = heights.size();
