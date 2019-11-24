@@ -4,7 +4,9 @@
 // [1] https://leetcode.com/problems/maximal-rectangle/
 // [2] https://ithelp.ithome.com.tw/articles/10217418
 //
-int maximalRectangle(vector<vector<char>> &matrix) {
+// #dp, #stack, #array
+// #like
+int maximalRectangle_dp(vector<vector<char>> &matrix) {
   if (matrix.empty() || matrix[0].empty())
     return 0;
 
