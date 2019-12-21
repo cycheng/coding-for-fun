@@ -6,7 +6,7 @@
 // #like
 #include "std.h"
 
-string shortestCommonSupersequence(string s, string t) {
+string shortestCommonSupersequence_20ms(string s, string t) {
   const int m = s.length() + 1, n = t.length() + 1;
   vector<vector<int>> dp(m, vector<int>(n));
   for (int i = 1; i < m; ++i)
@@ -22,15 +22,12 @@ string shortestCommonSupersequence(string s, string t) {
     if (s[i - 1] == t[j - 1]) {
       ans += s[i - 1];
       --i, --j;
-      cout << "1" << ans << endl;
     } else {
       if (dp[i][j - 1] > dp[i - 1][j]) {
         ans += t[j - 1];
-        cout << "2" << ans << endl;
         --j;
       } else {
         ans += s[i - 1];
-        cout << "3" << ans << endl;
         --i;
       }
     }
