@@ -44,3 +44,5 @@ Coding for fun.
   * leetcode/474. ones-and-zeroes.cpp
   * leetcode/903. valid-permutations-for-di-sequence.cpp
 
+- Day 12:
+  * leetcode/198. house-robber.cpp
