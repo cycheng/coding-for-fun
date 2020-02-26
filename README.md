@@ -47,3 +47,8 @@ Coding for fun.
 - Day 12:
   * leetcode/198. house-robber.cpp
   * leetcode/213. house-robber-ii.cpp
+
+# Others
+
+  * leetcode/252. meeting-rooms.cpp
+  * leetcode/253. meeting-rooms-ii.cpp
