@@ -2,6 +2,38 @@
 
 #include "std.h"
 
+// 32ms 83.09%
+// 15.6 MB (23.08%)
+// Ref:
+// https://leetcode.com/problems/the-skyline-problem/discuss/61197/(Guaranteed)-Really-Detailed-and-Good-(Perfect)-Explanation-of-The-Skyline-Problem
+// and yhatl's c++ implementation.
+vector<vector<int>> getSkyline_32ms(vector<vector<int>> &buildings) {
+  multiset<pair<int, int>> points;
+  for (const auto &b : buildings) {
+    points.emplace(b[0], -b[2]);
+    points.emplace(b[1], b[2]);
+  }
+
+  vector<vector<int>> ans;
+  int curSkyline = 0;
+  multiset<int> heights({0});
+  for (const auto &p : points) {
+    // start of a building
+    if (p.second < 0)
+      heights.emplace(-p.second);
+    else // end of a building
+         // Note! use 'find' in order to erase one matching point.
+         // erase(p.second) erases all elements of value p.second.
+      heights.erase(heights.find(p.second));
+
+    if (curSkyline != *heights.rbegin()) {
+      curSkyline = *heights.rbegin();
+      ans.push_back({p.first, curSkyline});
+    }
+  }
+  return ans;
+}
+
 // cy first attempt:
 // 48 ms (35.27 %)
 // 18.2 mb (7.69 %)
