@@ -34,6 +34,28 @@ struct uint256_t {
     return {low128, high128};
   }
 
+  bool zero() const { return !low && !high; }
+
+  void shr1Bit() {
+    low = (low >> 1) | ((high & 0x1) << 127);
+    high >>= 1;
+  }
+
+  uint128_t mod(const uint128_t b) {
+    uint128_t r = 0;
+    while (!zero()) {
+      bool overflow = r & ((uint128_t)1 << 127);
+      r <<= 1;
+      if (low & 1)
+        ++r;
+
+      if (r >= b || overflow)
+        r -= b;
+      shr1Bit();
+    }
+    return r;
+  }
+
   uint256_t(uint128_t l, uint128_t h) : low(l), high(h) {}
   uint256_t() : low(0), high(0) {}
 
@@ -117,3 +139,23 @@ struct Montgomery {
 
   uint128_t N, Ninv, R2;
 };
+
+/// Modular Exponentiation
+/// Inputs: x, e, n 128-bit integer
+/// Output: x^e mod n (128-bit integer)
+uint128_t modexp(uint128_t x, uint128_t e, uint128_t n) {
+  uint128_t base = x;
+  x = 1;
+  while (e) {
+    if (e & 0x1) {
+      uint256_t xb = uint256_t::mul(x, base);
+      x = xb.mod(n);
+    }
+
+    uint256_t xb = uint256_t::mul(base, base);
+    base = xb.mod(n);
+    e >>= 1;
+  }
+  return x;
+}
+
