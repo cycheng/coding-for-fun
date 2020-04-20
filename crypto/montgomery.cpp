@@ -1,3 +1,4 @@
+#include <cinttypes>
 #include <cstdint>
 
 // Reference:
@@ -6,9 +7,20 @@
 // [3] https://cp-algorithms.com/algebra/montgomery_multiplication.html
 // [4] https://github.com/Fattouche/RSA
 typedef __uint128_t uint128_t;
+struct uint256_t;
+
+static void print128(const char *prefix, const uint128_t &a);
+static void print256(const char *prefix, const uint256_t &a);
+
+#define UINT128_C(high, low)                                                   \
+  (((uint128_t)UINT64_C(high) << 64) | (UINT64_C(low)))
 
 struct uint256_t {
   /// result (256-bit) = a * b
+  ///
+  /// test:
+  ///   a = b = fbeab553608bdf65b2ab09bb910317f9
+  ///   r = f7e616c17c2dc9735b47e453f14f580e322a313f6f357991aeff08f7a414b031
   static uint256_t mul(uint128_t a, uint128_t b) {
     //    a =   [ah64,     al64]
     // x) b =   [bh64,     bl64]
@@ -23,15 +35,20 @@ struct uint256_t {
     // highLow = [64, 191] bit
     // high = [128, 255] bit
     uint128_t low = (uint128_t)al64 * bl64;
-    uint128_t highLow = (uint128_t)ah64 * bl64 + (uint128_t)al64 * bh64;
+    uint128_t highLow1 = (uint128_t)ah64 * bl64;
+    uint128_t highLow2 = (uint128_t)al64 * bh64;
     uint128_t high = (uint128_t)ah64 * bh64;
 
-    highLow += low >> 64;
-    high += highLow >> 64;
+    high += (highLow1 >> 64) + (highLow2 >> 64);
+    highLow1 &= UINT128_C(0x0, 0xffffffffffffffff);
+    highLow2 &= UINT128_C(0x0, 0xffffffffffffffff);
 
-    uint128_t low128 = (uint128_t)(uint64_t)low | (highLow << 64);
+    highLow1 += (low >> 64) + highLow2;
+    high += highLow1 >> 64;
+
+    uint128_t low128 = (uint128_t)(uint64_t)low | (highLow1 << 64);
     uint128_t high128 = high;
-    return {low128, high128};
+    return {high128, low128};
   }
 
   bool zero() const { return !low && !high; }
