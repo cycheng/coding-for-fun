@@ -8,6 +8,7 @@
 // [4] https://github.com/Fattouche/RSA
 // [5] https://github.com/calccrypto/uint128_t/blob/master/uint128_t.cpp
 typedef __uint128_t uint128_t;
+typedef __int128_t int128_t;
 struct uint256_t;
 
 static void print128(const char *prefix, const uint128_t &a);
@@ -147,9 +148,9 @@ struct Montgomery {
     // (2) q * n / r = (q * n).high
     // => a = (x + q * n) / r
     //      = x.high + (q * n).high
-    uint128_t a = x.high + uint256_t::mul(q, N).high;
-    if (a >= N)
-      a -= N;
+    int128_t a = x.high - uint256_t::mul(q, N).high;
+    if (a < 0)
+      a += N;
     return a;
   }
 
@@ -166,15 +167,22 @@ struct Montgomery {
     // (3) ...
     // (7) N * Ninv ≡ 1 (mod 2^64) => N * Ninv * (2 - N * Ninv) (mod 2^128)
     for (int i = 0; i < 7; ++i)
-      Ninv *= 2 - N * Ninv;
+      Ninv = Ninv * (2 - N * Ninv);
 
+    print128("Ninv", Ninv);
+    // print128("R2", R2);
     for (int i = 0; i < 4; i++) {
       R2 <<= 1;
       if (R2 >= N)
         R2 -= N;
     }
-    for (int i = 0; i < 5; i++)
-      R2 = ((R2 % N) * R2) % N;
+    //  R2 = modexp(R2, 4, N);
+    // print128("R2^4 mod N", R2);
+    for (int i = 0; i < 5; i++) {
+      R2 = montMul(R2, R2);
+    }
+    // print128("R2", R2);
+    // print128("2^256 % n", modexp(2, 256, N));
   }
 
   uint128_t N, Ninv, R2;
