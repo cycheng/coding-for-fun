@@ -1,5 +1,6 @@
 #include <cinttypes>
 #include <cstdint>
+#include <cstdio>
 
 // Reference:
 // [1] https://en.wikipedia.org/wiki/Montgomery_modular_multiplication
@@ -218,5 +219,16 @@ uint128_t modexp(uint128_t x, uint128_t e, uint128_t n) {
     e >>= 1;
   }
   return x;
+}
+
+static void print128(const char *prefix, const uint128_t &a) {
+  printf("%s 0x %" PRIx64 "%016" PRIx64 "\n", prefix, (uint64_t)(a >> 64),
+         (uint64_t)a);
+}
+
+static void print256(const char *prefix, const uint256_t &a) {
+  printf("%s 0x %" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "\n",
+         prefix, (uint64_t)(a.high >> 64), (uint64_t)a.high,
+         (uint64_t)(a.low >> 64), (uint64_t)a.low);
 }
 
