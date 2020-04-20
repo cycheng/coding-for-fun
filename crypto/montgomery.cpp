@@ -14,6 +14,7 @@ struct uint256_t;
 
 static void print128(const char *prefix, const uint128_t &a);
 static void print256(const char *prefix, const uint256_t &a);
+uint128_t modexp(uint128_t x, uint128_t e, uint128_t n);
 
 #define UINT128_C(high, low)                                                   \
   (((uint128_t)UINT64_C(high) << 64) | (UINT64_C(low)))
@@ -232,3 +233,27 @@ static void print256(const char *prefix, const uint256_t &a) {
          (uint64_t)(a.low >> 64), (uint64_t)a.low);
 }
 
+int main(int argc, char *argv[]) {
+  // 128-bit prime number
+  uint128_t N = UINT128_C(0x9E40FD675571E0A, 0xF74D65DA4EA541CF);
+  // uint128_t N = 19;
+  uint128_t X = UINT128_C(0xFBEAB553608BDF65, 0xB2AB09BB910317F9);
+  uint128_t E = UINT128_C(0x172A202E867B1177, 0x9604827082342863);
+  // uint128_t E = UINT128_C(0, 1);
+  print128("N", N);
+  print128("X", X);
+  print128("E", E);
+  print128("general modexp =", modexp(X, E, N));
+  // r = 1eac00fd9081a9b5b8a5d31a7b9f92f
+
+  // print128("5^2 % 7", modexp(10, 1, 7));
+  // divmod(10, 7);
+  // uint256_t test0(UINT128_C(0xf7e616c17c2dc973, 0x5b47e453f14f580e),
+  //                 UINT128_C(0x322a313f6f357991, 0xaeff08f7a414b031));
+  // print128("test0", test0.mod(N));
+
+  Montgomery Mont(N);
+  print128("montgomery exponential =", Mont.montModExp(X, E));
+  // print128("montgomery exponential =", Mont.montModExp(N, E));
+  return 0;
+}
