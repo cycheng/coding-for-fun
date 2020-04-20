@@ -6,6 +6,7 @@
 // [2] https://cryptography.fandom.com/wiki/Montgomery_reduction
 // [3] https://cp-algorithms.com/algebra/montgomery_multiplication.html
 // [4] https://github.com/Fattouche/RSA
+// [5] https://github.com/calccrypto/uint128_t/blob/master/uint128_t.cpp
 typedef __uint128_t uint128_t;
 struct uint256_t;
 
@@ -53,27 +54,49 @@ struct uint256_t {
 
   bool zero() const { return !low && !high; }
 
-  void shr1Bit() {
-    low = (low >> 1) | ((high & 0x1) << 127);
-    high >>= 1;
+  uint16_t bits() const {
+    uint16_t out = 0;
+    if (uint128_t up = high) {
+      out = 128;
+      while (up) {
+        up >>= 1;
+        out++;
+      }
+    } else {
+      uint128_t low = this->low;
+      while (low) {
+        low >>= 1;
+        out++;
+      }
+    }
+    return out;
   }
 
-  uint128_t mod(const uint128_t b) {
+  uint128_t mod(const uint128_t b) const {
+    // print256("me = ", *this);
+    // print128("b = ", b);
     uint128_t r = 0;
-    while (!zero()) {
+    for (uint16_t x = bits(); x > 0; x--) {
       bool overflow = r & ((uint128_t)1 << 127);
       r <<= 1;
-      if (low & 1)
-        ++r;
-
+      if (x > 128) {
+        if ((high >> (x - 1U - 128)) & 1)
+          ++r;
+      } else {
+        if ((low >> (x - 1)) & 1)
+          ++r;
+      }
+      if (overflow) {
+        printf("overflow\n");
+      }
+      // print128("r =", r);
       if (r >= b || overflow)
         r -= b;
-      shr1Bit();
     }
     return r;
   }
 
-  uint256_t(uint128_t l, uint128_t h) : low(l), high(h) {}
+  uint256_t(uint128_t h, uint128_t l) : low(l), high(h) {}
   uint256_t() : low(0), high(0) {}
 
   uint128_t low, high;
