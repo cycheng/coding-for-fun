@@ -104,13 +104,26 @@ struct uint256_t {
 };
 
 struct Montgomery {
+  /// Inputs: x = 128-bit integer in Normal Space
+  uint128_t toMontSpace(uint128_t x) {
+    x %= N;
+    for (int i = 0; i < 128; i++) {
+      x <<= 1;
+      if (x >= N)
+        x -= N;
+    }
+    return x;
+  }
+
   /// Inputs: x, e = 128-bit integer, x is in Normal Space
   uint128_t montModExp(uint128_t x, uint128_t e) {
     // Result x in Montgomery Space
+    // mX = toMontSpace(1)
     uint128_t mX = montMul(1, R2);
 
     // Transform x to Montgomery Space as base
     // mBase = x * r^2 * r^-1 (mod N)
+    // mBase = toMontSpace(x);
     uint128_t mBase = montMul(x, R2);
 
     while (e) {
