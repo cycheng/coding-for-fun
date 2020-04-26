@@ -1,6 +1,8 @@
 #include <cinttypes>
 #include <cstdint>
 #include <cstdio>
+#include <iomanip>
+#include <ostream>
 
 // Reference:
 // [1] https://en.wikipedia.org/wiki/Montgomery_modular_multiplication
@@ -12,9 +14,10 @@ typedef __uint128_t uint128_t;
 typedef __int128_t int128_t;
 struct uint256_t;
 
-static void print128(const char *prefix, const uint128_t &a);
-static void print256(const char *prefix, const uint256_t &a);
 uint128_t modexp(uint128_t x, uint128_t e, uint128_t n);
+
+// #include <iostream>
+// std::ostream &operator<<(std::ostream &outs, const uint128_t &a);
 
 #define UINT128_C(high, low)                                                   \
   (((uint128_t)UINT64_C(high) << 64) | (UINT64_C(low)))
@@ -89,6 +92,15 @@ struct uint256_t {
         r -= b;
     }
     return r;
+  }
+
+  friend std::ostream &operator<<(std::ostream &outs, const uint256_t &a) {
+    std::ostream::fmtflags flags = outs.flags();
+    outs << "0x " << std::hex << (uint64_t)(a.high >> 64) << std::setfill('0')
+         << std::setw(16) << (uint64_t)a.high << (uint64_t)(a.low >> 64)
+         << (uint64_t)a.low;
+    outs.flags(flags);
+    return outs;
   }
 
   uint256_t(uint128_t h, uint128_t l) : low(l), high(h) {}
@@ -189,24 +201,29 @@ struct Montgomery {
     for (int i = 0; i < 7; ++i)
       Ninv = Ninv * (2 - N * Ninv);
 
-    print128("Ninv", Ninv);
-    // print128("R2", R2);
+    // std::cout << "Ninv = " << Ninv << "\n";
     for (int i = 0; i < 4; i++) {
       R2 <<= 1;
       if (R2 >= N)
         R2 -= N;
     }
-    //  R2 = modexp(R2, 4, N);
-    // print128("R2^4 mod N", R2);
-    for (int i = 0; i < 5; i++) {
+
+    for (int i = 0; i < 5; i++)
       R2 = montMul(R2, R2);
-    }
-    // print128("R2", R2);
-    // print128("2^256 % n", modexp(2, 256, N));
+
+    // std::cout << "R2 = " << R2 << "\n";
   }
 
   uint128_t N, Ninv, R2;
 };
+
+std::ostream &operator<<(std::ostream &outs, const uint128_t &a) {
+  std::ostream::fmtflags flags = outs.flags();
+  outs << "0x " << std::hex << (uint64_t)(a >> 64) << std::setfill('0')
+       << std::setw(16) << (uint64_t)a;
+  outs.flags(flags);
+  return outs;
+}
 
 /// Modular Exponentiation
 /// Inputs: x, e, n 128-bit integer
