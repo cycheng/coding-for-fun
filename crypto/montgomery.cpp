@@ -55,8 +55,6 @@ struct uint256_t {
     return {high128, low128};
   }
 
-  bool zero() const { return !low && !high; }
-
   uint16_t bits() const {
     uint16_t out = 0;
     if (uint128_t up = high) {
@@ -76,11 +74,8 @@ struct uint256_t {
   }
 
   uint128_t mod(const uint128_t b) const {
-    // print256("me = ", *this);
-    // print128("b = ", b);
     uint128_t r = 0;
     for (uint16_t x = bits(); x > 0; x--) {
-      bool overflow = r & ((uint128_t)1 << 127);
       r <<= 1;
       if (x > 128) {
         if ((high >> (x - 1U - 128)) & 1)
@@ -89,11 +84,8 @@ struct uint256_t {
         if ((low >> (x - 1)) & 1)
           ++r;
       }
-      if (overflow) {
-        printf("overflow\n");
-      }
-      // print128("r =", r);
-      if (r >= b || overflow)
+
+      if (r >= b)
         r -= b;
     }
     return r;
