@@ -247,6 +247,22 @@ uint128_t modexp(uint128_t x, uint128_t e, uint128_t n) {
   return x;
 }
 
+#include <chrono>
+#include <iostream>
+#include <ratio>
+struct ReportExecTime {
+  std::chrono::high_resolution_clock::time_point start;
+  const char *prefix;
+  ReportExecTime(const char *prefix = nullptr) : prefix(prefix) {
+    start = std::chrono::high_resolution_clock::now();
+  }
+  ~ReportExecTime() {
+    std::chrono::duration<double, std::milli> elapsed =
+        std::chrono::high_resolution_clock::now() - start;
+    std::cout << prefix << "Exe time = " << elapsed.count() << " msec."
+              << std::endl;
+  }
+};
 
 int main(int argc, char *argv[]) {
   // 128-bit prime number
@@ -261,6 +277,21 @@ int main(int argc, char *argv[]) {
 
   Montgomery Mont(N);
   std::cout << "montgomery exponential = " << Mont.montModExp(X, E) << "\n";
+
+  // result = 1eac00fd9081a9b5b8a5d31a7b9f92f
+  volatile uint128_t EE = E;
+  {
+    ReportExecTime time("general modexp: ");
+    for (int i = 0; i < 10000; ++i)
+      modexp(X, EE, N);
+  }
+
+  {
+    ReportExecTime time("Montgomery exponential: ");
+    Montgomery Mont1(N);
+    for (int i = 0; i < 10000; ++i)
+      Mont1.montModExp(X, EE);
+  }
 
   return 0;
 }
