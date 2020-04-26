@@ -20,7 +20,7 @@ uint128_t modexp(uint128_t x, uint128_t e, uint128_t n);
   (((uint128_t)UINT64_C(high) << 64) | (UINT64_C(low)))
 
 struct uint256_t {
-  /// result (256-bit) = a * b
+  /// Compute: c (256-bit) = a * b
   ///
   /// test:
   ///   a = b = fbeab553608bdf65b2ab09bb910317f9
@@ -98,7 +98,10 @@ struct uint256_t {
 };
 
 struct Montgomery {
-  /// Inputs: x = 128-bit integer in Normal Space
+  /// Transform x to Montgomery Representation.
+  /// c = x * R mod n
+  ///
+  /// R = 2^128 in 128-bit integer implementation.
   uint128_t toMontSpace(uint128_t x) {
     x %= N;
     for (int i = 0; i < 128; i++) {
@@ -109,16 +112,21 @@ struct Montgomery {
     return x;
   }
 
-  /// Inputs: x, e = 128-bit integer, x is in Normal Space
+  /// Compute: c = x^e mod n
+  ///
+  /// x, e, and c are 128-bit integers.
+  /// n and r^2 is initialized in constructor
   uint128_t montModExp(uint128_t x, uint128_t e) {
     // Result x in Montgomery Space
-    // mX = toMontSpace(1)
     uint128_t mX = montMul(1, R2);
 
     // Transform x to Montgomery Space as base
     // mBase = x * r^2 * r^-1 (mod N)
-    // mBase = toMontSpace(x);
     uint128_t mBase = montMul(x, R2);
+
+    // toMontSpace is slower, but it is also work.
+    // uint128_t mX = toMontSpace(1);
+    // uint128_t mBase = toMontSpace(x);
 
     while (e) {
       // mX = mX * mBase * r^-1 (mod n)
@@ -133,29 +141,34 @@ struct Montgomery {
     return montMul(mX, 1);
   }
 
-  // result = mA * mB * r^-1 (mod n)
-  // mA, mB are 128-bit integer in Montgomery space.
+  /// Compute Montgomery multiplication.
+  /// cR = aR * bR * R^-1 (mod n)
+  ///
+  /// mA = aR, mB = bR. mA and mB are in Montgomery space. (128-bit integer)
   uint128_t montMul(uint128_t mA, uint128_t mB) {
     return reduce(uint256_t::mul(mA, mB));
   }
 
-  uint128_t reduce(uint256_t x) {
-    // q = (x mod r) * n' mod r
-    // a = (x + q * n) / r
-    // if a >= n:
-    //     a -= n
-    // return a
-
+  /// Compute Montgomery Reduction.
+  /// cR = xR^2 * R^-1 (mod n)
+  ///
+  /// Algorithm:
+  ///   q = (xR^2 mod R) * n' mod R
+  ///   a = (xR^2 + q * n) / R
+  ///   if a >= n:
+  ///     a -= n
+  ///   return a
+  uint128_t reduce(uint256_t xR2) {
     // (1) x.low = x mod r
     // (2) (uint128_t)(x.low * Ninv) = (x.low * Ninv) mod r
     // => q = (x mod r) * n' mod r
     //      = (uint128_t)x.low * n';
-    uint128_t q = x.low * Ninv;
+    uint128_t q = xR2.low * Ninv;
     // (1) x / r = x.high
     // (2) q * n / r = (q * n).high
     // => a = (x + q * n) / r
     //      = x.high + (q * n).high
-    int128_t a = x.high - uint256_t::mul(q, N).high;
+    int128_t a = xR2.high - uint256_t::mul(q, N).high;
     if (a < 0)
       a += N;
     return a;
