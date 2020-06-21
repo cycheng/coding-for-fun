@@ -69,3 +69,64 @@ public:
     return solve(houses, 0, k);
   }
 };
+
+// O(k*n*n)
+// ref:
+// https://leetcode.com/problems/allocate-mailboxes/discuss/685403/JavaC%2B%2BPython-DP-Solution
+class Solution_DP {
+public:
+  // cost of putting a mail box between houses[i] and houses[j]
+  int putOneBoxCost(const vector<int> &psum, int i, int j) {
+    int m1 = (i + j) / 2, m2 = (i + j + 1) / 2;
+    return (psum[j + 1] - psum[m2]) - (psum[m1 + 1] - psum[i]);
+  }
+
+  // putOneBoxCost = putOneBoxCostWithHouse.
+  // But this version takes 284 ms, 7 times slower than putOneBoxCost version.
+  int putOneBoxCostWithHouse(const vector<int> &houses, int i, int j) {
+    int s = 0;
+    int m = (i + j) / 2;
+    for (int x = i; x < m; ++x)
+      s += houses[m] - houses[x];
+    for (int x = m + 1; x <= j; ++x)
+      s += houses[x] - houses[m];
+    return s;
+  }
+
+  void dumpDp(const vector<vector<int>> &dp) {
+    for (const auto &v : dp) {
+      for (int i : v)
+        cout << i << " ";
+      cout << endl;
+    }
+  }
+
+  int dp[100][100];
+  int minDistance(vector<int> &houses, const int K) {
+    // dp[j][k] = The minimum distance of the first j + 1 houses (house 0 to j)
+    // with k + 1 mailboxes
+    //          = min {dp[i][k - 1] + putOneBoxCost(i + 1, j) | i = 0..j-1}
+    //
+    // putOneBoxCost(i, j): cost of putting a mail box between houses[i] and
+    // houses[j]
+    const int n = houses.size();
+
+    if (K >= n)
+      return 0;
+
+    sort(houses.begin(), houses.end());
+    vector<int> psum(n + 1);
+    partial_sum(houses.begin(), houses.end(), psum.begin() + 1);
+
+    for (int j = 0; j < n; ++j)
+      dp[j][0] = putOneBoxCost(psum, 0, j);
+    for (int k = 1; k < K; ++k)
+      for (int j = k - 1; j < n; ++j) {
+        int minv = 1e6;
+        for (int i = 0; i < j; ++i)
+          minv = min(minv, dp[i][k - 1] + putOneBoxCost(psum, i + 1, j));
+        dp[j][k] = minv;
+      }
+    return dp[n - 1][K - 1];
+  }
+};
