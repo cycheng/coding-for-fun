@@ -1,7 +1,8 @@
 # coding-for-fun
 Coding for fun.
 
-# Dynamic Programming (https://ithelp.ithome.com.tw/users/20112376/ironman/2672)
+# Dynamic Programming
+- ref: https://ithelp.ithome.com.tw/users/20112376/ironman/2672
 - Day 1:
   * [TODO] 509. fibonacci-number.cpp
   * [TODO] 322. coin-change.cpp
@@ -58,5 +59,14 @@ Coding for fun.
 # Contest
 
 - Biweekly 21
-  https://leetcode.com/contest/biweekly-contest-21/ranking/
-  * 1371. find-the-longest-substring-containing-vowels-in-even-counts
+  * https://leetcode.com/contest/biweekly-contest-21/ranking/
+  * leetcode/1371. find-the-longest-substring-containing-vowels-in-even-counts.cpp
+
+- Biweekly 28
+  * https://leetcode.com/contest/biweekly-contest-28/ranking
+  * (4) leetcode/1476. subrectangle-queries.cpp
+  * (5) leetcode/1477. find-two-non-overlapping-sub-arrays-each-with-target-sum.cpp
+  * (7) leetcode/1478. allocate-mailboxes.cpp
+
+# Crypto
+- Montgomery Modular Exponentiation
