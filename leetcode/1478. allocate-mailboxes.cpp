@@ -101,10 +101,9 @@ public:
     }
   }
 
-  int dp[100][100];
   int minDistance(vector<int> &houses, const int K) {
     // dp[j][k] = The minimum distance of the first j + 1 houses (house 0 to j)
-    // with k + 1 mailboxes
+    //            with k + 1 mailboxes
     //          = min {dp[i][k - 1] + putOneBoxCost(i + 1, j) | i = 0..j-1}
     //
     // putOneBoxCost(i, j): cost of putting a mail box between houses[i] and
@@ -114,6 +113,7 @@ public:
     if (K >= n)
       return 0;
 
+    int dp[100][100];
     sort(houses.begin(), houses.end());
     vector<int> psum(n + 1);
     partial_sum(houses.begin(), houses.end(), psum.begin() + 1);
@@ -128,5 +128,29 @@ public:
         dp[j][k] = minv;
       }
     return dp[n - 1][K - 1];
+  }
+
+  // optimize space: O(n^2) -> O(n)
+  int minDistanceLinearSpace(vector<int> &houses, const int K) {
+    const int n = houses.size();
+
+    if (K >= n)
+      return 0;
+
+    sort(houses.begin(), houses.end());
+    vector<int> psum(n + 1);
+    partial_sum(houses.begin(), houses.end(), psum.begin() + 1);
+
+    int dp[100];
+    for (int j = 0; j < n; ++j)
+      dp[j] = putOneBoxCost(psum, 0, j);
+    for (int k = 1; k < K; ++k)
+      for (int j = n - 1; j >= k - 1; --j) { // update dp[i] from n-1 to k-1
+        int minv = 1e6;
+        for (int i = 0; i < j; ++i)
+          minv = min(minv, dp[i] + putOneBoxCost(psum, i + 1, j));
+        dp[j] = minv;
+      }
+    return dp[n - 1];
   }
 };
