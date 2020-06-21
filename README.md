@@ -62,6 +62,12 @@ Coding for fun.
   * https://leetcode.com/contest/biweekly-contest-21/ranking/
   * leetcode/1371. find-the-longest-substring-containing-vowels-in-even-counts.cpp
 
+- Biweekly 27
+  * https://leetcode.com/contest/biweekly-contest-27/ranking
+  * (4) 1461. check-if-a-string-contains-all-binary-codes-of-size-k.cpp
+  * (5) 1462. course-schedule-iv.cpp
+  * (6) 1463. cherry-pickup-ii.cpp
+
 - Biweekly 28
   * https://leetcode.com/contest/biweekly-contest-28/ranking
   * (4) leetcode/1476. subrectangle-queries.cpp
