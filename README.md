@@ -77,6 +77,7 @@ Coding for fun.
 - Biweekly 29
   * https://leetcode.com/contest/biweekly-contest-29/ranking
   * (5) leetcode/1493. longest-subarray-of-1s-after-deleting-one-element.cpp
+  * (6) leetcode/1494. parallel-courses-ii.cpp
 
 # Crypto
 - Montgomery Modular Exponentiation
