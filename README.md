@@ -74,5 +74,9 @@ Coding for fun.
   * (5) leetcode/1477. find-two-non-overlapping-sub-arrays-each-with-target-sum.cpp
   * (7) leetcode/1478. allocate-mailboxes.cpp
 
+- Biweekly 29
+  * https://leetcode.com/contest/biweekly-contest-29/ranking
+  * (5) leetcode/1493. longest-subarray-of-1s-after-deleting-one-element.cpp
+
 # Crypto
 - Montgomery Modular Exponentiation
