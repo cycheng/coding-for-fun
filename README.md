@@ -86,10 +86,10 @@ Coding for fun.
 
 - Biweekly 30
   * https://leetcode.com/contest/biweekly-contest-30/ranking
+  * (3) leetcode/1507. reformat-date.cpp
   * (4) leetcode/1508. range-sum-of-sorted-subarray-sums.cpp
   * (5) leetcode/1509. minimum-difference-between-largest-and-smallest-value-in-three-moves.cpp
   * (6) leetcode/1510. stone-game-iv.cpp
-
 
 # Crypto
 - Montgomery Modular Exponentiation
