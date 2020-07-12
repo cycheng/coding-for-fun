@@ -86,6 +86,7 @@ Coding for fun.
 
 - Biweekly 30
   * https://leetcode.com/contest/biweekly-contest-30/ranking
+  * (5) leetcode/1509. minimum-difference-between-largest-and-smallest-value-in-three-moves.cpp
   * (6) leetcode/1510. stone-game-iv.cpp
 
 
