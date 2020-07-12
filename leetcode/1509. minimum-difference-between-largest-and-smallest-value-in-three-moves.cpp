@@ -3,11 +3,10 @@
 // #biweekly 30
 // #array, #5, #like
 
-// Given an int array, return the 4th largest difference. (cy: need to prove
-// it.)
-// ≡ choose one element of nums and change it by any value in one move.
-//   Return the minimum difference between the largest and smallest value of
-//   nums after perfoming at most 3 moves.
+// choose one element of nums and change it by any value in one move.
+// Return the minimum difference between the largest and smallest value of
+// nums after perfoming at most 3 moves.
+//   ≡ Given an int array, return the 4th largest difference. (cy: need proof)
 //
 // Constraints:
 // 1 <= nums.length <= 10^5
