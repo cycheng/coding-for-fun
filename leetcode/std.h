@@ -13,4 +13,7 @@
 
 #include <iostream>
 
+// c standard library header
+#include <cstring>
+
 using namespace std;
