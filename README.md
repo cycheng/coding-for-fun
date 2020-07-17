@@ -62,6 +62,9 @@ Coding for fun.
   * https://leetcode.com/contest/biweekly-contest-21/ranking/
   * leetcode/1371. find-the-longest-substring-containing-vowels-in-even-counts.cpp
 
+- [Biweekly 25](https://leetcode.com/contest/biweekly-contest-25/ranking)
+  * (7) [1434. number-of-ways-to-wear-different-hats-to-each-other.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1434.%20number-of-ways-to-wear-different-hats-to-each-other.cpp)
+
 - Biweekly 26
   * https://leetcode.com/contest/biweekly-contest-26/ranking
   * (4) 1447. simplified-fractions.cpp
