@@ -94,5 +94,9 @@ Coding for fun.
   * (5) leetcode/1509. minimum-difference-between-largest-and-smallest-value-in-three-moves.cpp
   * (6) leetcode/1510. stone-game-iv.cpp
 
+- [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
+  * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
+  * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
+
 # Crypto
 - Montgomery Modular Exponentiation
