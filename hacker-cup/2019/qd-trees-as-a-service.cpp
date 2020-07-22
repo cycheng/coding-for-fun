@@ -4,7 +4,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
+//#define DEBUG
 // struct node {
 //   int num_in = 0;
 //   vector<int> ancestor;
@@ -35,8 +35,10 @@ bool can_reach(const vector<int> &parent, int x, int y) {
 }
 
 bool is_valid_lca(const vector<int> &parent, int x, int y, int lca) {
-  // cout << "check " << x << " parent[x] " << parent[x] << " " << y
-  //      << " parent[y] " << parent[y] << " " << lca << endl;
+#ifdef DEBUG
+  cout << "check " << x << " (parent[x] = " << parent[x] << "), " << y
+       << " (parent[y] = " << parent[y] << "), lca = " << lca << endl;
+#endif
   if (x == 0 || y == 0)
     return false;
 
@@ -56,7 +58,9 @@ void solve() {
   int n, m;
   cin >> n >> m;
 
-  vector<vector<int>> adj(n + 1);
+  // vector<vector<int>> adj(n + 1);
+  vector<unordered_set<int>> ancestor(n + 1);
+  vector<unordered_set<int>> descendent(n + 1);
   vector<tuple<int, int, int>> edges;
   vector<int> vert_in_degree(n + 1);
 
@@ -65,15 +69,24 @@ void solve() {
     int x, y, lca;
     cin >> x >> y >> lca;
     if (x != lca) {
-      adj[lca].push_back(x);
-      adj[x].push_back(lca);
-      ++vert_in_degree[x];
+      // adj[lca].push_back(x);
+      // adj[x].push_back(lca);
+      ancestor[x].emplace(lca);
+
+      if (descendent[lca].count(x) == 0) {
+        descendent[lca].emplace(x);
+        ++vert_in_degree[x];
+      }
     }
 
     if (y != lca) {
-      adj[lca].push_back(y);
-      adj[y].push_back(lca);
-      ++vert_in_degree[y];
+      // adj[lca].push_back(y);
+      // adj[y].push_back(lca);
+      ancestor[y].emplace(lca);
+      if (descendent[lca].count(y) == 0) {
+        descendent[lca].emplace(y);
+        ++vert_in_degree[y];
+      }
     }
     edges.emplace_back(x, y, lca);
   }
@@ -85,19 +98,59 @@ void solve() {
   vector<pair<int, int>> worklist;
   worklist.reserve(n);
 
+  // Test case for good_root
+  // 1
+  // 6 3
+  // 3 5 1
+  // 5 6 6
+  // 1 4 2
   int root = 0;
   for (int i = 1; i <= n; ++i)
     if (vert_in_degree[i] == 0) {
-      root = i;
-      break;
+      bool good_root = true;
+      for (int u : descendent[i])
+        if (vert_in_degree[u] > 1) {
+          good_root = false;
+          break;
+        }
+      if (root == 0)
+        root = i;
+      if (good_root) {
+        root = i;
+        break;
+      }
     }
+#ifdef DEBUG
+  cout << "root = " << root << endl;
+#endif
 
-  for (int i = root + 1; i <= n; ++i)
-    if (vert_in_degree[i] == 0) {
-      adj[root].push_back(i);
-      adj[i].push_back(root);
+  for (int i = 1; i <= n; ++i) {
+    if (i != root && vert_in_degree[i] == 0) {
+      bool attach_to_root = true;
+      // for (int u : descendent[i]) {
+      //   if (vert_in_degree[u] > 1) {
+      //     attach_to_root = false;
+      //     for (int p : ancestor[u])
+      //       if (p != i) {
+      //         // adj[p].push_back(i);
+      //         descendent[p].emplace(i);
+      //         cout << " add parent: " << i << " , " << p << endl;
+      //         // adj[i].push_back(p);
+      //         break;
+      //       }
+      //     break;
+      //   }
+      // }
+
+      if (attach_to_root) {
+        // adj[root].push_back(i);
+        descendent[root].emplace(i);
+        // adj[i].push_back(root);
+        // cout << " add parent: " << i << " , " << root << endl;
+      }
       ++vert_in_degree[i];
     }
+  }
 
   worklist.emplace_back(0, root);
 
@@ -111,7 +164,7 @@ void solve() {
     //   tree[p].push_back(u);
     // }
 
-    for (int v : adj[u])
+    for (int v : descendent[u])
       if (vert_in_degree[v])
         if (--vert_in_degree[v] == 0)
           worklist.emplace_back(u, v);
@@ -133,7 +186,9 @@ void solve() {
   for (const auto e : edges) {
     int x, y, lca;
     tie(x, y, lca) = e;
-    // cout << "weird" << endl;
+#ifdef DEBUG
+    cout << "check edge " << x << " " << y << " " << lca << endl;
+#endif
     bool status = true;
     if (x == lca)
       status = can_reach(parent, y, lca);
