@@ -98,6 +98,7 @@ Coding for fun.
   * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
   * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
   * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
+  * (45) [qd-trees-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qd-trees-as-a-service.cpp)
 
 # Crypto
 - Montgomery Modular Exponentiation
