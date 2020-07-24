@@ -1,212 +1,170 @@
 // https://www.facebook.com/codingcompetitions/hacker-cup/2019/qualification-round/problems/D
 //
-// #like
+// #like, #disjoint set, #45
 
 #include <bits/stdc++.h>
 using namespace std;
-//#define DEBUG
-// struct node {
-//   int num_in = 0;
-//   vector<int> ancestor;
-//   vector<int> descendant;
-// }
 
-bool hasCycle(const vector<vector<int>> &adj, vector<bool> &visited, int u,
-              int parent) {
-  visited[u] = true;
-  for (const int &v : adj[u]) {
-    if (visited[v] && v != parent) {
-      // cout << "find cycle v = " << v << " p = " << parent << endl;
+// disjoint_set from @mzchen
+// see:
+// https://leetcode.com/problems/similar-string-groups/discuss/132374/Short-C%2B%2B-solution-at-220ms-using-disjoint-set
+class disjoint_set {
+  vector<int> v;
+  int sz;
+
+public:
+  disjoint_set(int n) { makeset(n); }
+  disjoint_set() : sz(0) {}
+
+  void makeset(int n) {
+    v.resize(n);
+    iota(v.begin(), v.end(), 0);
+    sz = n;
+  }
+
+  int find(int i) {
+    if (i != v[i])
+      v[i] = find(v[i]);
+    return v[i];
+  }
+
+  void join(int i, int j) {
+    int si = find(i), sj = find(j);
+    if (si != sj) {
+      v[si] = v[sj];
+      --sz;
+    }
+  }
+
+  void reset(int i, int s) { v[i] = s; }
+
+  int size() const { return sz; }
+};
+
+// ref:
+// [1]
+// https://www.facebook.com/notes/facebook-hacker-cup/hacker-cup-2019-qualification-round-solutions/2797355073613709/
+// [2] Chen-Hao Chang's contest solution.
+vector<vector<int>> descendents;
+vector<tuple<int, int, int>> edges;
+vector<int> in_degrees;
+disjoint_set subtree_set;
+
+bool failed;
+bool build_tree(const vector<int> &nodes, const int parent, vector<int> &ans) {
+  if (nodes.size() == 1) {
+    ans[nodes[0]] = parent;
+    return true;
+  }
+
+  unordered_set<int> candidates;
+  candidates.insert(nodes.begin(), nodes.end());
+  auto all_in_candidates = [&](int x, int y, int lca) {
+    return candidates.count(x) && candidates.count(y) && candidates.count(lca);
+  };
+
+  // try to choose a root
+  for (int root : nodes) {
+    if (in_degrees[root] == 0) {
+      // initialize set, each node is in unique set.
+      for (int x : nodes)
+        subtree_set.reset(x, x);
+
+      // scan edges
+      for (const auto &e : edges) {
+        int x, y, lca;
+        tie(x, y, lca) = e;
+
+        // skip this edge since it has been checked.
+        if (!all_in_candidates(x, y, lca))
+          continue;
+
+        // Since root != lca, lca, x, y must be in the same subtree.
+        if (lca != root && x != root && y != root) {
+          subtree_set.join(lca, x);
+          subtree_set.join(lca, y);
+        }
+      }
+
+      bool valid = true;
+      for (const auto &e : edges) {
+        int x, y, lca;
+        tie(x, y, lca) = e;
+
+        // skip this edge since it has been checked.
+        if (!all_in_candidates(x, y, lca))
+          continue;
+
+        // lca is root, then the x and y should reside in different subtree.
+        if (lca == root && x != root && y != root &&
+            subtree_set.find(x) == subtree_set.find(y)) {
+          valid = false;
+          break;
+        }
+      }
+
+      if (!valid)
+        continue;
+
+      for (int x : descendents[root])
+        --in_degrees[x];
+
+      unordered_map<int, vector<int>> subtree_nodes;
+      for (int x : nodes)
+        if (x != root)
+          subtree_nodes[subtree_set.find(x)].push_back(x);
+
+      // recursively build each subtree.
+      for (const auto &sub : subtree_nodes) {
+        if (!build_tree(sub.second, root, ans))
+          return false;
+      }
+      ans[root] = parent;
       return true;
     }
-    if (!visited[v])
-      if (hasCycle(adj, visited, v, u))
-        return true;
   }
   return false;
-}
-
-bool can_reach(const vector<int> &parent, int x, int y) {
-  while (x && x != y) {
-    if (x != y)
-      x = parent[x];
-  }
-  return x == y;
-}
-
-bool is_valid_lca(const vector<int> &parent, int x, int y, int lca) {
-#ifdef DEBUG
-  cout << "check " << x << " (parent[x] = " << parent[x] << "), " << y
-       << " (parent[y] = " << parent[y] << "), lca = " << lca << endl;
-#endif
-  if (x == 0 || y == 0)
-    return false;
-
-  if (parent[x] == lca && parent[x] == lca)
-    return true;
-
-  if (parent[x] == lca)
-    return is_valid_lca(parent, x, parent[y], lca);
-
-  if (parent[y] == lca)
-    return is_valid_lca(parent, parent[x], y, lca);
-
-  return is_valid_lca(parent, parent[x], parent[y], lca);
 }
 
 void solve() {
   int n, m;
   cin >> n >> m;
 
-  // vector<vector<int>> adj(n + 1);
-  vector<unordered_set<int>> ancestor(n + 1);
-  vector<unordered_set<int>> descendent(n + 1);
-  vector<tuple<int, int, int>> edges;
-  vector<int> vert_in_degree(n + 1);
+  descendents.clear();
+  in_degrees.clear();
+  edges.clear();
 
-  // build adjacent graph
+  descendents.resize(n + 1);
+  in_degrees.resize(n + 1);
+  subtree_set.makeset(n + 1);
+
+  // build graph
   for (int i = 0; i < m; ++i) {
     int x, y, lca;
     cin >> x >> y >> lca;
-    if (x != lca) {
-      // adj[lca].push_back(x);
-      // adj[x].push_back(lca);
-      ancestor[x].emplace(lca);
 
-      if (descendent[lca].count(x) == 0) {
-        descendent[lca].emplace(x);
-        ++vert_in_degree[x];
-      }
+    if (x != lca) {
+      descendents[lca].push_back(x);
+      ++in_degrees[x];
     }
 
     if (y != lca) {
-      // adj[lca].push_back(y);
-      // adj[y].push_back(lca);
-      ancestor[y].emplace(lca);
-      if (descendent[lca].count(y) == 0) {
-        descendent[lca].emplace(y);
-        ++vert_in_degree[y];
-      }
+      descendents[lca].push_back(y);
+      ++in_degrees[y];
     }
     edges.emplace_back(x, y, lca);
   }
 
-  // build tree in topological order
-  // vector<vector<int>> tree(n + 1);
-  vector<int> parent(n + 1);
-  // <parent, u>
-  vector<pair<int, int>> worklist;
-  worklist.reserve(n);
+  vector<int> v(n), parents(n + 1);
+  iota(v.begin(), v.end(), 1);
 
-  // Test case for good_root
-  // 1
-  // 6 3
-  // 3 5 1
-  // 5 6 6
-  // 1 4 2
-  int root = 0;
-  for (int i = 1; i <= n; ++i)
-    if (vert_in_degree[i] == 0) {
-      bool good_root = true;
-      for (int u : descendent[i])
-        if (vert_in_degree[u] > 1) {
-          good_root = false;
-          break;
-        }
-      if (root == 0)
-        root = i;
-      if (good_root) {
-        root = i;
-        break;
-      }
-    }
-#ifdef DEBUG
-  cout << "root = " << root << endl;
-#endif
-
-  for (int i = 1; i <= n; ++i) {
-    if (i != root && vert_in_degree[i] == 0) {
-      bool attach_to_root = true;
-      // for (int u : descendent[i]) {
-      //   if (vert_in_degree[u] > 1) {
-      //     attach_to_root = false;
-      //     for (int p : ancestor[u])
-      //       if (p != i) {
-      //         // adj[p].push_back(i);
-      //         descendent[p].emplace(i);
-      //         cout << " add parent: " << i << " , " << p << endl;
-      //         // adj[i].push_back(p);
-      //         break;
-      //       }
-      //     break;
-      //   }
-      // }
-
-      if (attach_to_root) {
-        // adj[root].push_back(i);
-        descendent[root].emplace(i);
-        // adj[i].push_back(root);
-        // cout << " add parent: " << i << " , " << root << endl;
-      }
-      ++vert_in_degree[i];
-    }
-  }
-
-  worklist.emplace_back(0, root);
-
-  for (int i = 0; i < (int)worklist.size(); ++i) {
-    int p = worklist[i].first;
-    int u = worklist[i].second;
-    parent[u] = p;
-
-    // if (p != u) {
-    //   tree[u].push_back(p);
-    //   tree[p].push_back(u);
-    // }
-
-    for (int v : descendent[u])
-      if (vert_in_degree[v])
-        if (--vert_in_degree[v] == 0)
-          worklist.emplace_back(u, v);
-  }
-
-  // parent[root] = 0;
-
-  // run dfs to detect cycle.
-  // vector<bool> visited(n + 1);
-  // for (int u = 1; u <= n; ++u)
-  //   if (!visited[u])
-  //     if (hasCycle(tree, visited, u, 0)) {
-  //       cout << " Impossible" << endl;
-  //       return;
-  //     }
-  // for (int p : parent)
-  //   cout << " " << p;
-  // cout << endl;
-  for (const auto e : edges) {
-    int x, y, lca;
-    tie(x, y, lca) = e;
-#ifdef DEBUG
-    cout << "check edge " << x << " " << y << " " << lca << endl;
-#endif
-    bool status = true;
-    if (x == lca)
-      status = can_reach(parent, y, lca);
-    else if (y == lca)
-      status = can_reach(parent, x, lca);
-    else {
-      status = !can_reach(parent, x, y);
-      status &= !can_reach(parent, y, x);
-      status &= is_valid_lca(parent, x, y, lca);
-    }
-    if (!status) {
-      cout << " Impossible";
-      return;
-    }
+  if (!build_tree(v, 0, parents)) {
+    cout << "Impossible";
+    return;
   }
 
   for (int i = 1; i <= n; ++i)
-    cout << " " << parent[i];
+    cout << " " << parents[i];
 }
 
 int main(int argc, char *argv[]) {
