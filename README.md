@@ -105,6 +105,7 @@ Coding for fun.
   * (15) [qb-alchemy.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qb-alchemy.cpp)
   * (21) [qc-timber.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qc-timber.cpp)
   * (16) [qd-running-on-fumes-1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd-running-on-fumes-1.cpp)
+  * (38) [qd-running-on-fumes-2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd-running-on-fumes-2.cpp)
 
 # Crypto
 - Montgomery Modular Exponentiation
