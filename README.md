@@ -100,5 +100,11 @@ Coding for fun.
   * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
   * (45) [qd-trees-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qd-trees-as-a-service.cpp)
 
+- [2020 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2020)
+  * (10) [qa-travel-restrictions.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qa-travel-restrictions.cpp)
+  * (15) [qb-alchemy.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qb-alchemy.cpp)
+  * (21) [qc-timber.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qc-timber.cpp)
+  * (16) [qd-running-on-fumes-1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd-running-on-fumes-1.cpp)
+
 # Crypto
 - Montgomery Modular Exponentiation
