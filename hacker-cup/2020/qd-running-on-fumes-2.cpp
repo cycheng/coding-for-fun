@@ -289,6 +289,12 @@ int64_t solve() {
         curcost = pq.top().totalcost;
         curm = m - dist;
       }
+
+      // cout << " curcost " << curcost << endl;
+
+      if (nid == b)
+        return curcost;
+
       if (costs[nid] && curm >= 0)
         pq.emplace(curcost + costs[nid], nid);
 
