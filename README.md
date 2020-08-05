@@ -105,7 +105,7 @@ Coding for fun.
   * (15) [qb-alchemy.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qb-alchemy.cpp)
   * (21) [qc-timber.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qc-timber.cpp)
   * (16) [qd-running-on-fumes-1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd-running-on-fumes-1.cpp)
-  * (38) [qd-running-on-fumes-2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd-running-on-fumes-2.cpp)
+  * (38) [qd-running-on-fumes-2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qd2-running-on-fumes.cpp)
   * [rank 544](https://www.facebook.com/codingcompetitions/hacker-cup/2020/qualification-round/scoreboard?start=544)
 
 # Crypto
