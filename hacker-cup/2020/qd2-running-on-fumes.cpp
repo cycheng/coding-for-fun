@@ -24,9 +24,13 @@ public:
 
   void update(size_t pos, int64_t val) {
     assert(pos < n && "out of bound update.");
+    pos += n;
     // update from leaf node to root.
-    for (pos += n; pos > 0; pos /= 2)
-      array[pos] = min(array[pos], val);
+    if (array[pos] <= val)
+      return;
+    array[pos] = val;
+    for (; pos > 1; pos /= 2)
+      array[pos / 2] = min(array[pos], array[pos ^ 1]);
   }
 
   // query minimum value in range [left, right]
@@ -40,6 +44,18 @@ public:
     }
     return res;
   }
+
+  void dump() const {
+    for (uint32_t i = 0; i < array.size(); ++i) {
+      if (array[i] >= INF)
+        cout << "x ";
+      else
+        cout << array[i] << " ";
+      if (i % 12 == 11)
+        cout << endl;
+    }
+    cout << endl;
+  }
 };
 
 struct node {
@@ -50,11 +66,18 @@ struct node {
   node() = default;
 };
 
+void dump_path(const vector<node> &path) {
+  for (const auto &p : path)
+    cout << "(" << p.from << ", " << p.dist << "), ";
+  cout << endl;
+}
+
 vector<node> bfs_build_path(const vector<vector<int>> &graph, int from) {
   const uint32_t n = graph.size();
   vector<bool> visited(n);
   vector<node> path(n);
   queue<int> worklist;
+  path[from].from = -1;
   worklist.push(from);
   while (!worklist.empty()) {
     uint32_t size = worklist.size();
@@ -78,11 +101,15 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
                                    const vector<int> &cost,
                                    const vector<node> &path, int fuel,
                                    int start, int end) {
-  const uint32_t n = path.size();
+  const uint32_t n = graph.size();
   vector<bool> visited(n);
-  segment_tree sgt(n + fuel);
+  segment_tree sgt(n);
   sgt.update(path[end].dist, 0);
-  for (int main = path[end].from; main != 0; main = path[main].from) {
+
+  for (int main = path[end].from; main != -1; main = path[main].from) {
+#ifdef DUMP
+    cout << "process " << main << endl;
+#endif
     // search in subtree for a main node.
     queue<int> worklist;
     worklist.push(main);
@@ -91,20 +118,37 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
       visited[u] = true;
       worklist.pop();
 
-      if (path[u].dist - path[main].dist > fuel || cost[u] == 0)
+      if (path[u].dist - path[main].dist > fuel)
         continue;
 
-      int64_t mincost = sgt.query(
-          path[main].dist,
-          min(path[main].dist + fuel + path[u].dist - path[main].dist, (int)n));
-      sgt.update(path[u].dist, mincost);
+      if (cost[u]) {
+        int back_steps = min(
+            path[main].dist + fuel + path[main].dist - path[u].dist, (int)n);
+        int64_t mincost = sgt.query(path[main].dist, back_steps);
+        sgt.update(path[u].dist, mincost + cost[u]);
+#ifdef DUMP
+        cout << "  query: node " << u << "(dist =" << path[u].dist << "), from "
+             << path[main].dist << " to dist = " << back_steps << " = "
+             << mincost << endl;
+#endif
+      }
 
       for (int v : graph[u])
-        if (!visited[v])
+        if (!visited[v] && path[v].from == u)
           worklist.push(v);
     }
   }
-  return sgt.query(start, start);
+  int64_t ans = INF; // sgt.query(start, start);
+
+  if ((int)n == fuel)
+    --fuel;
+  for (int i = 1; i <= fuel; ++i) {
+    ans = min(ans, sgt.query(i, i));
+  }
+#ifdef DUMP
+  sgt.dump();
+#endif
+  return ans >= INF ? -1 : ans;
 }
 
 int64_t solve() {
@@ -125,8 +169,11 @@ int64_t solve() {
     graph[i].push_back(parent);
   }
 
+  --a, --b;
   // build path start from a to all other nodes
   vector<node> path = bfs_build_path(graph, a);
+  // dump_path(path);
+  costs[b] = 0;
 
   return bfs_backward_find_min_cost(graph, costs, path, m, a, b);
 }
