@@ -108,9 +108,9 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
   segment_tree sgt(n);
 
   sgt.update(path[end].dist, 0);
+  for (int main = path[end].from; main != start; main = path[main].from) {
     DUMP(cout << "process " << main << endl);
 
-  for (int main = path[end].from; main != -1; main = path[main].from) {
     // search in subtree for a main node.
     queue<int> worklist;
     worklist.push(main);
@@ -138,14 +138,19 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
           worklist.push(v);
     }
   }
-  int64_t ans = INF; // sgt.query(start, start);
 
-  if ((int)n == fuel)
-    --fuel;
-  for (int i = 1; i <= fuel; ++i) {
-    ans = min(ans, sgt.query(i, i));
-  }
   DUMP(sgt.dump());
+
+  // Note! This is also work:
+  //    ans = sgt.query(0, 0);
+  //
+  // But we will need patch the code:
+  // (1) main != -1
+  // (2) costs[a] = 0
+  // (3) if (cost[u] || u == start)
+
+  int64_t ans = INF;
+  ans = sgt.query(1, min(fuel, (int)n - 1));
 
   return ans >= INF ? -1 : ans;
 }
