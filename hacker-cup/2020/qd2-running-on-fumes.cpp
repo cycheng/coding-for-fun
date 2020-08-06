@@ -77,7 +77,6 @@ void dump_path(const vector<node> &path) {
 
 vector<node> bfs_build_path(const vector<vector<int>> &graph, int from) {
   const uint32_t n = graph.size();
-  vector<bool> visited(n);
   vector<node> path(n);
   queue<int> worklist;
   path[from].from = -1;
@@ -86,11 +85,9 @@ vector<node> bfs_build_path(const vector<vector<int>> &graph, int from) {
     uint32_t size = worklist.size();
     for (uint32_t i = 0; i < size; ++i) {
       int u = worklist.front();
-      visited[u] = true;
       worklist.pop();
       for (int v : graph[u])
-        // if (v != path[u].from) {
-        if (!visited[v]) {
+        if (v != path[u].from) {
           worklist.push(v);
           path[v].from = u;
           path[v].dist = path[u].dist + 1;
