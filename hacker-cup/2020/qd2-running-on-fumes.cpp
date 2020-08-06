@@ -12,10 +12,27 @@ using namespace std;
 // [3] William Lin (tmwilliamlin168)'s contest solution
 // [4] https://www.geeksforgeeks.org/segment-tree-efficient-implementation/
 
-// See [4]
+// Segment Tree, see [4]
 //
 // For example: n = 5
-
+//   value:   v[0 1 2 3 4]
+//   storage: s[0 1 2 3 4 5 6 7 8 9]
+//
+//              s1
+//            v[0:4]
+//           /      \
+//         s2        s3
+//     v[3:4][0]   v[1:2]
+//       /   \       /   \
+//      s4   s5     s6    s7
+//   v[3:4]  v[0]  v[1]  v[2]
+//   /    \
+//  s8    s9
+// v[3]   v[4]
+//
+// Parent index = (int) i / 2
+// Left Child  = i * 2
+// Right Child = i * 2 + 1
 constexpr int64_t INF = 1e15; // numeric_limits<int64_t>::max();
 
 class segment_tree {
