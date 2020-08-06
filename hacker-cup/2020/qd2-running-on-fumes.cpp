@@ -1,15 +1,18 @@
 // https://www.facebook.com/codingcompetitions/hacker-cup/2020/qualification-round/problems/D2
-// #38, #like, #segment tree
+// #38, #like, #dp, #segment tree
 
 #include <bits/stdc++.h>
 using namespace std;
 
+#define DUMP(x)
+
 // Reference:
 // [1] https://youtu.be/XTXB46IIeHM?t=20
-// [2] William Lin (tmwilliamlin168)'s contest solution
-// [3] https://www.geeksforgeeks.org/segment-tree-efficient-implementation/
+// [2] Chen-Hao Chang's (cchao) contest solution.
+// [3] William Lin (tmwilliamlin168)'s contest solution
+// [4] https://www.geeksforgeeks.org/segment-tree-efficient-implementation/
 
-// See [3]
+// See [4]
 //
 // For example: n = 5
 
@@ -97,19 +100,20 @@ vector<node> bfs_build_path(const vector<vector<int>> &graph, int from) {
   return path;
 }
 
+// ref: Chen-Hao Chang's (cchao) contest solution.
 int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
                                    const vector<int> &cost,
                                    const vector<node> &path, int fuel,
                                    int start, int end) {
   const uint32_t n = graph.size();
+
   vector<bool> visited(n);
   segment_tree sgt(n);
+
   sgt.update(path[end].dist, 0);
+    DUMP(cout << "process " << main << endl);
 
   for (int main = path[end].from; main != -1; main = path[main].from) {
-#ifdef DUMP
-    cout << "process " << main << endl;
-#endif
     // search in subtree for a main node.
     queue<int> worklist;
     worklist.push(main);
@@ -118,19 +122,18 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
       visited[u] = true;
       worklist.pop();
 
-      if (path[u].dist - path[main].dist > fuel)
+      const int main_dist = path[main].dist, u_dist = path[u].dist;
+      if (u_dist - main_dist > fuel)
         continue;
 
       if (cost[u]) {
-        int back_steps = min(
-            path[main].dist + fuel + path[main].dist - path[u].dist, (int)n);
-        int64_t mincost = sgt.query(path[main].dist, back_steps);
-        sgt.update(path[u].dist, mincost + cost[u]);
-#ifdef DUMP
-        cout << "  query: node " << u << "(dist =" << path[u].dist << "), from "
-             << path[main].dist << " to dist = " << back_steps << " = "
-             << mincost << endl;
-#endif
+        int back_steps = min(main_dist + fuel + main_dist - u_dist, (int)n);
+        int64_t mincost = sgt.query(main_dist, back_steps);
+        sgt.update(u_dist, mincost + cost[u]);
+
+        DUMP(cout << "  query: node " << u << "(dist =" << u_dist << "), from "
+                  << main_dist << " to dist = " << back_steps << " = "
+                  << mincost << endl);
       }
 
       for (int v : graph[u])
@@ -145,9 +148,8 @@ int64_t bfs_backward_find_min_cost(const vector<vector<int>> &graph,
   for (int i = 1; i <= fuel; ++i) {
     ans = min(ans, sgt.query(i, i));
   }
-#ifdef DUMP
-  sgt.dump();
-#endif
+  DUMP(sgt.dump());
+
   return ans >= INF ? -1 : ans;
 }
 
@@ -172,9 +174,9 @@ int64_t solve() {
   --a, --b;
   // build path start from a to all other nodes
   vector<node> path = bfs_build_path(graph, a);
-  // dump_path(path);
-  costs[b] = 0;
+  DUMP(dump_path(path));
 
+  costs[b] = 0;
   return bfs_backward_find_min_cost(graph, costs, path, m, a, b);
 }
 
