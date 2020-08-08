@@ -90,6 +90,7 @@ Coding for fun.
 
 - [Biweekly 31](https://leetcode.com/contest/biweekly-contest-31/ranking)
   * (4) [1524. number-of-sub-arrays-with-odd-sum.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1524.%20number-of-sub-arrays-with-odd-sum.cpp)
+  * (7) [1526. minimum-number-of-increments-on-subarrays-to-form-a-target-array.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1526.%20minimum-number-of-increments-on-subarrays-to-form-a-target-array.cpp)
 
 - [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
   * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
