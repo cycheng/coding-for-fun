@@ -57,13 +57,23 @@ struct optimized {
       cout << "Invalid matrix size\n";
       return;
     }
+
     for (uint32_t i = 0; i < c.row_size(); i += TileRowSize)
       for (uint32_t j = 0; j < c.col_size(); j += TileColSize)
-        for (uint32_t k = 0; k < b.row_size(); k += TileStepSize)
-          for (uint32_t ti = i; ti < i + TileRowSize; ++ti)
-            for (uint32_t tj = j; tj < j + TileColSize; ++tj)
-              for (uint32_t tk = k; tk < k + TileStepSize; ++tk)
+        for (uint32_t k = 0; k < b.row_size(); k += TileStepSize) {
+          // T localB[TileStepSize][TileColSize];
+          // for (uint32_t tk = k; tk < k + TileStepSize; ++tk)
+          //   for (uint32_t tj = j; tj < j + TileColSize; ++tj)
+          //     localB[tk - k][tj - j] = b.at(tk, tj);
+          // T localA[TileRowSize][TileStepSize];
+          // for (uint32_t ti = i; ti < i + TileRowSize; ++ti)
+          //   for (uint32_t tk = k; tk < k + TileStepSize; ++tk)
+          //     localA[ti - i][tk - k] = a.at(ti, tk);
+          for (uint32_t tk = k; tk < k + TileStepSize; ++tk)
+            for (uint32_t ti = i; ti < i + TileRowSize; ++ti)
+              for (uint32_t tj = j; tj < j + TileColSize; ++tj)
                 c.at(ti, tj) += a.at(ti, tk) * b.at(tk, tj);
+        }
   }
 
   static bool is_valid_size(const tensor<T> &c, const tensor<T> &a,

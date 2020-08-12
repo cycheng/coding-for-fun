@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <bitset>
 #include <cstdlib>
-#include <utility>
 #include <numeric>
+#include <utility>
 
 #include <map>
 #include <queue>
@@ -17,6 +17,6 @@
 #include <iostream>
 
 // c standard library header
+#include <cassert>
 #include <cstring>
-
 using namespace std;
