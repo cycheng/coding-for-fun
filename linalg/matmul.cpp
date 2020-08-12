@@ -37,7 +37,7 @@ template <class T> struct naive {
     for (uint32_t i = 0; i < c.row_size(); ++i)
       for (uint32_t j = 0; j < c.col_size(); ++j)
         for (uint32_t k = 0; k < b.row_size(); ++k)
-          c.at(i, j) += a.at(i, k) * b.at(j, k);
+          c.at(i, j) += a.at(i, k) * b.at(k, j);
   }
 
   static bool is_valid_size(const tensor<T> &c, const tensor<T> &a,
@@ -63,7 +63,7 @@ struct optimized {
           for (uint32_t ti = i; ti < i + TileRowSize; ++ti)
             for (uint32_t tj = j; tj < j + TileColSize; ++tj)
               for (uint32_t tk = k; tk < k + TileStepSize; ++tk)
-                c.at(ti, tj) += a.at(ti, tk) * b.at(tj, tk);
+                c.at(ti, tj) += a.at(ti, tk) * b.at(tk, tj);
   }
 
   static bool is_valid_size(const tensor<T> &c, const tensor<T> &a,
@@ -104,6 +104,14 @@ tensor<float> gen_rand_matrix_f32(uint32_t row, uint32_t col, float a,
   for (uint32_t i = 0; i < row; ++i)
     for (uint32_t j = 0; j < col; ++j)
       mat.at(i, j) = dist(gen);
+  return mat;
+}
+
+tensor<float> gen_increase_matrix_f32(uint32_t row, uint32_t col) {
+  tensor<float> mat(row, col);
+  for (uint32_t i = 0; i < row; ++i)
+    for (uint32_t j = 0; j < col; ++j)
+      mat.at(i, j) = (float)i;
   return mat;
 }
 
@@ -196,9 +204,29 @@ void bench1024_different_tile() {
 //   optimized<float, >::
 // }
 
+void correctness() {
+  tensor<float> a = gen_increase_matrix_f32(256, 32);
+  tensor<float> b = gen_increase_matrix_f32(32, 512);
+  tensor<float> c0(256, 512), c1(256, 512);
+  float c_init = 1.f;
+  c0.fill(c_init);
+  c1.fill(c_init);
+  naive<float>::matmul(c0, a, b);
+  optimized<float, 8, 8, 16>::matmul(c1, a, b);
+  for (int i = 0; i < 256; ++i)
+    for (int j = 0; j < 512; ++j)
+      if (c0.at(i, j) != 1.f + 496.f * i) {
+        cout << "row " << i << " failed\n";
+        break;
+      }
+  if (compare(c0, c1))
+    cout << "pass test.\n";
+}
+
 } // namespace test
 
 int main(int argc, char *argv[]) {
+  test::correctness();
   test::bench1024_different_tile();
   return 0;
 }
