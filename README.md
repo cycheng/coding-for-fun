@@ -92,7 +92,8 @@ Coding for fun.
   * (4) [1524. number-of-sub-arrays-with-odd-sum.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1524.%20number-of-sub-arrays-with-odd-sum.cpp)
   * (7) [1526. minimum-number-of-increments-on-subarrays-to-form-a-target-array.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1526.%20minimum-number-of-increments-on-subarrays-to-form-a-target-array.cpp)
 
-- [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
+- ### [Biweekly 32](https://leetcode.com/contest/biweekly-contest-32/ranking)
+  * (3) [1539. kth-missing-positive-number.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1539.%20kth-missing-positive-number.cpp)
   * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
   * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
   * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
