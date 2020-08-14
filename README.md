@@ -1,5 +1,4 @@
-# coding-for-fun
-Coding for fun.
+# Coding for fun.
 
 # Dynamic Programming
 - ref: https://ithelp.ithome.com.tw/users/20112376/ironman/2672
@@ -95,6 +94,7 @@ Coding for fun.
 #### [Biweekly 32](https://leetcode.com/contest/biweekly-contest-32/ranking)
   * (3) [1539. kth-missing-positive-number.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1539.%20kth-missing-positive-number.cpp)
   * (5) [1541. minimum-insertions-to-balance-a-parentheses-string.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1541.%20minimum-insertions-to-balance-a-parentheses-string.cpp)
+  * (6) [1542. find-longest-awesome-substring.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1542.%20find-longest-awesome-substring.cpp)
 
 #### [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
   * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
