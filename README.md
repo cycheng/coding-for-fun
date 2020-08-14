@@ -96,12 +96,13 @@ Coding for fun.
   * (3) [1539. kth-missing-positive-number.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1539.%20kth-missing-positive-number.cpp)
   * (5) [1541. minimum-insertions-to-balance-a-parentheses-string.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1541.%20minimum-insertions-to-balance-a-parentheses-string.cpp)
 
+#### [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
   * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
   * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
   * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
   * (45) [qd-trees-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qd-trees-as-a-service.cpp)
 
-- [2020 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2020)
+#### [2020 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2020)
   * (10) [qa-travel-restrictions.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qa-travel-restrictions.cpp)
   * (15) [qb-alchemy.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qb-alchemy.cpp)
   * (21) [qc-timber.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qc-timber.cpp)
