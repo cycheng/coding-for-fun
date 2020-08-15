@@ -97,10 +97,13 @@
   * (6) [1542. find-longest-awesome-substring.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1542.%20find-longest-awesome-substring.cpp)
 
 #### [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
-  * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
-  * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
-  * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
-  * (45) [qd-trees-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qd-trees-as-a-service.cpp)
+  * [Qualification Round](https://www.facebook.com/codingcompetitions/hacker-cup/2019/qualification-round)
+    * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
+    * (15) [qa-leapfrog-ch2.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch2.cpp)
+    * (25) [qc-mr.x.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qc-mr.x.cpp)
+    * (45) [qd-trees-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qd-trees-as-a-service.cpp)
+  * [Round 1](https://www.facebook.com/codingcompetitions/hacker-cup/2019/round-1)
+    * (15) [r1a-graphs-as-a-service.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/r1a-graphs-as-a-service.cpp)
 
 #### [2020 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2020)
   * (10) [qa-travel-restrictions.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2020/qa-travel-restrictions.cpp)

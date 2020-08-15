@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"files.associations": {
+			"deque": "cpp",
+			"string": "cpp",
+			"vector": "cpp",
+			"chrono": "cpp"
+		}
+	}
+}
