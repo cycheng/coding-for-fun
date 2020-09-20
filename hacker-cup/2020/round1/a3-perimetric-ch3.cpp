@@ -141,57 +141,58 @@ vector<int64_t> vertical(const vector<int> &left, const vector<int> &width,
 
   discrete id(all_xpos);
 
-  multiset<point> activeHeights;
+  multiset<point> activeDeltaH;
   segment_tree sgt(id.size());
   int64_t periSum = 0;
   for (int i = 0; i < n; ++i) {
     int x1 = id.getid(left[i]), x2 = id.getid(left[i] + width[i]);
-    int64_t x1h = height[i] - sgt.query(x1);
-    int64_t x2h = height[i] - sgt.query(x2);
+    int64_t x1dh = height[i] - sgt.query(x1);
+    int64_t x2dh = height[i] - sgt.query(x2);
 
-    while (activeHeights.size()) {
-      auto it = activeHeights.lower_bound(point(x1, 0 /* don't care */));
-      if (it == activeHeights.end() || it->id > x2)
+    while (activeDeltaH.size()) {
+      auto it = activeDeltaH.lower_bound(point(x1, 0 /* don't care */));
+      if (it == activeDeltaH.end() || it->id > x2)
         break;
 
       // merge the height.
       point mergePt = *it;
-      activeHeights.erase(it);
+      activeDeltaH.erase(it);
 
-      // Do not remove it->height from periSum:
-      // case 1:          case 2:
-      //   x1                   x2
-      //   |                    |
-      //   a1--a2           a1--a2
-      //   |   |            |   |
-      //   periSum += x1h   periSum += x2h
-      // if ((mergePt.id == x1 && mergePt.height > 0) ||
-      //     (mergePt.id == x2 && mergePt.height < 0))
-      //   continue;
+      // Do not remove merged delta height from periSum:
+      // case 1:               case 2:
+      //   x1------------------------x2
+      //   | x1dh                    | x2dh
+      //   a1-----a2             b1--b2
+      //   | a1dh |              |   | b2dh
+      //   periSum += x1dh       periSum += x2dh
+      //   x1dh += a1dh          x2dh += b2dh
+      if (mergePt.id == x1 && mergePt.height > 0)
+        x1dh += mergePt.height;
+      if (mergePt.id == x2 && mergePt.height < 0)
+        x2dh -= mergePt.height;
 
-      // Need to remove it->height from periSum:
-      // case 1:
+      // Need to remove merged delta height from periSum:
+      // case 3:
       //   x1-------c--x2
       //   |  a  b  |  |
       //   |  |  |  |  |
       //   periSum = periSum - a - b - c
       //
-      // case 2:          case 3:
-      //       x1-------------x2
-      //       |              |
-      //   a1--a2             a1--a2
-      //   |   |              |   |
-      //   periSum -= a2+x1h  periSum -= a1+x2h
+      // case 4:               case 5:
+      //       x1----------------x2
+      //       |                 |
+      //   a1--a2                b1--b2
+      //   |   |                 |   |
+      //   periSum -= a2 + x1dh  periSum -= b1 + x2dh
+
+      // For case 1 and case 2, the removed delta height is added back because
+      // we extend x1dh and x2dh.
       periSum -= abs(mergePt.height);
-      if (mergePt.id == x1 && mergePt.height > 0)
-        x1h += mergePt.height;
-      if (mergePt.id == x2 && mergePt.height < 0)
-        x2h -= mergePt.height;
     }
-    periSum += x1h;
-    periSum += x2h;
-    activeHeights.emplace(x1, x1h);  // height[i]);
-    activeHeights.emplace(x2, -x2h); //-height[i]);
+    periSum += x1dh;
+    periSum += x2dh;
+    activeDeltaH.emplace(x1, x1dh);
+    activeDeltaH.emplace(x2, -x2dh);
 
     sgt.update(x1, x2 + 1, height[i]);
     perimetrics[i] = periSum;
@@ -223,8 +224,10 @@ int main(int argc, char *argv[]) {
   int t;
   cin >> t;
   for (int i = 1; i <= t; ++i) {
+    cerr << i << " ";
     cout << "Case #" << i << ": " << solve();
     cout << endl;
   }
+  cerr << endl;
   return 0;
 }
