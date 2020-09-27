@@ -2,8 +2,6 @@
 //
 // #weekly 207
 // #6, #dp, #bitmask, #bipartite graph, #minimum-cost edge cover, #like
-
-//
 #include "std.h"
 
 int connectTwoGroups(vector<vector<int>> &cost) {
