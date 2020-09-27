@@ -98,6 +98,7 @@
 
 #### [Biweekly 33](https://leetcode.com/contest/biweekly-contest-33/ranking/)
   * (5) [1558. minimum-numbers-of-function-calls-to-make-target-array.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1558.%20minimum-numbers-of-function-calls-to-make-target-array.cpp)
+  * (6) [1559. detect-cycles-in-2d-grid.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1559.%20detect-cycles-in-2d-grid.cpp)
 
 #### [Biweekly 35](https://leetcode.com/contest/biweekly-contest-35/ranking)
   * (5) [1589. maximum-sum-obtained-of-any-permutation.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1589.%20maximum-sum-obtained-of-any-permutation.cpp)
