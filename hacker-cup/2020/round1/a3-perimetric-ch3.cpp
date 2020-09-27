@@ -202,6 +202,7 @@ vector<int64_t> vertical(const vector<int> &left, const vector<int> &width,
 }
 
 } // namespace non_decreasing
+
 int solve() {
   int n, k;
   cin >> n >> k;
