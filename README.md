@@ -102,6 +102,7 @@
 
 #### [Biweekly 34](https://leetcode.com/contest/biweekly-contest-34/ranking/)
   * (5) [1574. shortest-subarray-to-be-removed-to-make-array-sorted.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1574.%20shortest-subarray-to-be-removed-to-make-array-sorted.cpp)
+  * (6) [1575. count-all-possible-routes.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1575.%20count-all-possible-routes.cpp)
 
 #### [Biweekly 35](https://leetcode.com/contest/biweekly-contest-35/ranking)
   * (5) [1589. maximum-sum-obtained-of-any-permutation.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1589.%20maximum-sum-obtained-of-any-permutation.cpp)
