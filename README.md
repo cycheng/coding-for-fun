@@ -99,6 +99,7 @@
 #### [Biweekly 35](https://leetcode.com/contest/biweekly-contest-35/ranking)
   * (5) [1589. maximum-sum-obtained-of-any-permutation.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1589.%20maximum-sum-obtained-of-any-permutation.cpp)
   * (5) [1590. make-sum-divisible-by-p.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1590.%20make-sum-divisible-by-p.cpp)
+  * (6) [1591. strange-printer-ii.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1591.%20strange-printer-ii.cpp)
 
 #### [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
   * [Qualification Round](https://www.facebook.com/codingcompetitions/hacker-cup/2019/qualification-round)
