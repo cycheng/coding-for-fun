@@ -101,6 +101,9 @@
   * (5) [1590. make-sum-divisible-by-p.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1590.%20make-sum-divisible-by-p.cpp)
   * (6) [1591. strange-printer-ii.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1591.%20strange-printer-ii.cpp)
 
+#### [Weekly 207](https://leetcode.com/contest/weekly-contest-207/ranking)
+  * (6) [1595. minimum-cost-to-connect-two-groups-of-points.cpp](https://github.com/cycheng/coding-for-fun/blob/master/leetcode/1595.%20minimum-cost-to-connect-two-groups-of-points.cpp)
+
 #### [2019 Facebook Hacker Cup](https://www.facebook.com/codingcompetitions/hacker-cup/2019)
   * [Qualification Round](https://www.facebook.com/codingcompetitions/hacker-cup/2019/qualification-round)
     * (15) [qa-leapfrog-ch1.cpp](https://github.com/cycheng/coding-for-fun/blob/master/hacker-cup/2019/qa-leapfrog-ch1.cpp)
