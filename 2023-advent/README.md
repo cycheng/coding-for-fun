@@ -4,3 +4,6 @@
 * Day13: Bad description, I don't like it.
 * Day16: Ok.
 * Day17: priority queue
+  * unordered_set with custom hash
+* Day18: Shoelace formula
+
