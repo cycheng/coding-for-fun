@@ -6,4 +6,4 @@
 * Day17: priority queue
   * unordered_set with custom hash
 * Day18: Shoelace formula
-
+* Day19: range splitting
