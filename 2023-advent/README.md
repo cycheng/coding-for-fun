@@ -7,3 +7,6 @@
   * unordered_set with custom hash
 * Day18: Shoelace formula
 * Day19: range splitting
+* Day20: hard. circuit question.
+* Day21: hard. mathematics puzzle.
+*
