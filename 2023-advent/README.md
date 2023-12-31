@@ -9,6 +9,10 @@
 * Day19: range splitting
 * Day20: hard. circuit question.
 * Day21: hard. mathematics puzzle.
-* Day22: range intersection (stack boxes).
+* Day22: range intersection (stack boxes). topological sort.
   I made some mistakes in mapping Brick and Support, so to simplify, I just use
   unordered_map with Pos id.
+  * Please refactoring if have time!
+  * the second problem a bit like an union problem?
+
+
