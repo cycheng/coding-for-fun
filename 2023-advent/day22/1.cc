@@ -78,28 +78,6 @@ struct Support {
 
 unordered_map<int, Support> SupportMap;
 
-// <id, fallen set>
-// unordered_map<int, unordered_set<int>> FallenSetMap;
-
-// uint32_t fallenCountIfRemove(Support &sup) {
-//   if (FallenSetMap.find(sup.id) != FallenSetMap.end())
-//     return FallenSetMap.find(sup.id)->second.size();
-
-//   for (int id : sup.supports) {
-//     Support &floating = SupportMap.find(id)->second;
-//     if (floating.supportedBy.size() < 2) {
-//       // the id will fall.
-//       FallenSetMap[sup.id].insert(id);
-//       fallenCountIfRemove(floating);
-//       FallenSetMap[sup.id].insert(FallenSetMap[id].begin(),
-//                                   FallenSetMap[id].end());
-//     } else {
-
-//     }
-//   }
-//   return FallenSetMap[sup.id].size();
-// }
-
 void solve(PosList &plist) {
   // sort by starting Z pos.
   sort(plist.begin(), plist.end(),
@@ -143,30 +121,20 @@ void solve(PosList &plist) {
   }
 
   int ans = 0;
-  // for (auto &supIter : SupportMap) {
-  //   ans += fallenCountIfRemove(supIter.second);
-  // }
 
   // topological sort, ref:
   // https://github.com/tmoux/AdventOfCode-23/blob/master/Day22/sol.cpp
   vector<int> indegree(rearranged.size(), 0);
-  // unordered_map<int, int> indegree;
-  //  for (int i = 0; i < (int)SupportMap.size(); ++i) {
-
   for (auto &supIter : SupportMap) {
     for (int id : supIter.second.supports)
       indegree[id] += 1;
-    // indegree[sup.id] += sup.supportedBy.size();
   }
 
-  // for (int i = 0; i < (int)SupportMap.size(); ++i) {
   for (auto &supIter : SupportMap) {
-    // unordered_map<int, int> indegreeCopy = indegree;
     vector<int> indegreeCopy = indegree;
-    Support &sup = supIter.second; // SupportMap[i];
+    Support &sup = supIter.second;
     queue<int> q;
 
-    // cout << "\n";
     q.push(sup.id);
     while (!q.empty()) {
       int x = q.front();
@@ -174,10 +142,7 @@ void solve(PosList &plist) {
       if (x != sup.id)
         ans += 1;
       Support &xsup = SupportMap[x];
-      // xsup.print(x);
       for (int edge : xsup.supports) {
-        // cout << "  edge " << edge << ": ";
-        // SupportMap[edge].print(edge);
         indegreeCopy[edge] -= 1;
         assert(indegreeCopy[edge] >= 0);
         if (indegreeCopy[edge] == 0)
