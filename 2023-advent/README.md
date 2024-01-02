@@ -15,4 +15,7 @@
   * Please refactoring if have time!
   * the second problem a bit like an union problem?
 * Day23: graph traversal.
+  * todo: Think how to reduce the graph complexity.
+    * https://www.reddit.com/r/adventofcode/comments/18oy4pc/2023_day_23_solutions/?sort=confidence
+* Day24: math. line intersection.
 
